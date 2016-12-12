@@ -2,13 +2,92 @@
 <html>
 <head>
 	<title></title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 
 
-<script type="text/javascript">
+
+<canvas id="game"></canvas>
+<div id="game-square">
+	
+	<button onclick="startGame();"> Start Game</button>
+	<input id="player-name" type="text" placeholder="Player Name">
+
+	<button onclick="newPlayer()">New Player</button>
+<div id="timer">30 Seconds</div>
+<div> <span id="current-player"></span>Score: <span id="score">0</span></div>
+<div>High Score: <span id="highScore">0</span> </div> 
+	<!-- <button onclick="pauseGame()">Pause</button> -->
+</div>	
+	<script type="text/javascript">
+	var gameOn = false;
+	var score = 0;
+	var highScore = 0;
+
+	
+	function Player(name){
+		this.name = name;
+		this.highScore = 0;
+	}
+	// could also do this
+	// Player.prototype.highscore = 0
+
+	function newPlayer(){
+		var playerNameDiv = document.getElementById('player-name');
+		var playerName = playerNameDiv.value;
+		// var player1 = new Player(playerName);
+		playerArray.push(new Player(playerName));
+		document.getElementById('current-player').innerHTML = playerName + "'s";
+		console.log(player1);
+	}
+
+
+	function startGame(){
+		score = 0;
+		gameOn = true
+		// user started the game. save time. save time plus 30 Seconds
+		gameStart = Date.now();
+		gameEnd = Date.now() + 30000;
+		timerInterval = setInterval(updateTimer, 500);
+	}
+	function updateTimer(){
+		var newNow = Date.now();
+		// subtract game end time from current time
+		var timeDifference = Math.floor((gameEnd - newNow) / 1000);
+		if(timeDifference < 0){
+			clearInterval(timerInterval);
+			gameOn = false;
+			timeDifference = 0;
+			document.getElementById('timer').innerHTML = "Game Over";
+		}else{
+		document.getElementById('timer').innerHTML = timeDifference + " Seconds";
+	}
+}
+
+	var gameStart = 0;
+	var gameEnd = 0;
+	var timerInterval;
+	var playerArray
+
+// add a countdown timer
+// start game button
+// when clicked on the game starts
+// when clicked on date.now
+// when clicked on get date.now
+// create a set interval to run every x and inside recalculate the timer
+// when the difference is < 0 stop the game claer the timer
+
+// 1.add pause button
+// 2. add countdown timer
+// 2a. once timer runs out game is over
+// 3.keep score by player
+// 3a. make a player constructo- name(ask) high score
+// 3b. make an input for player name
+
 	// create the canvas tag with js
-	var canvas = document.createElement('canvas');
+	// var canvas = document.createElementById('canvas');
+	var canvas = document.getElementById('game');
 	var context = canvas.getContext('2d')
 
 	//give the canvas height and width
@@ -18,17 +97,20 @@
     document.body.appendChild(canvas)
 
     var backgroundImage = new Image();
-    backgroundImage.src = "background.png";
+    backgroundImage.src = "gothamgif.gif";
 	
+	var speedModifier = 1;
+
+
 	var hero = new Image();
-    hero.src = "hero.png";
+    hero.src = "goodlittle.png";
     var heroLocation = {
     	x: 100,
     	y: 100
     }
 
     var monster = new Image();
-    monster.src = "monster.png";
+    monster.src = "evillittle.png";
     var monsterLocation = {
     	x:200,
     	y:100
@@ -74,17 +156,29 @@
     });
 // this is where will update the hero based on wats true in keysDown
 function update(){
+if(score > highScore){
+	highScore = score;
+	document.getElementById('highScore').innerHTML=highScore;
+}
 if(39 in keysDown){
-	heroLocation.x +=10;
+	if(heroLocation.x <= 400){
+		heroLocation.x += (10 * speedModifier);
+	}
 }
 if(37 in keysDown){
-	heroLocation.x -=10;
+	if(heroLocation.x >= 10){
+		heroLocation.x -= (10 * speedModifier);
+	}
 }
 if(38 in keysDown){
-	heroLocation.y -=10;
+	if(heroLocation.y >= 10){
+		heroLocation.y -= (10 * speedModifier);
+	}
 }
 if(40 in keysDown){
-	heroLocation.y +=10;
+	if(heroLocation.y <= 400){
+		heroLocation.y += (10 * speedModifier);
+	}
 }
 	if(
 		(heroLocation.x <= monsterLocation.x + 32)
@@ -92,14 +186,24 @@ if(40 in keysDown){
 		&& (monsterLocation.x <= heroLocation.x + 32)
 		&& (monsterLocation.y <= heroLocation.y + 32)
 	){
-		console.log("Hero is left of the goblin");
+		// console.log("Hero is left of the goblin");
+	console.log("Hero caught the monster");
+			var random = Math.random() * 200;
+			var random2 = Math.random() * 200;
+			monsterLocation.x = random;
+			monsterLocation.y = random2;
+			score++;
+			document.getElementById('score').innerHTML=score;
+		
 	}else{
-		console.log("Hero is not close enough");
+		// console.log("Hero is not close enough");
 	}
 }
     // keep this at the bottom
     function draw(){
-    	update();
+    	if(gameOn){
+    		update();
+    	}
     	// put background image on the context at x = 0 y = 0
     	context.drawImage(backgroundImage,0,0);
     	context.drawImage(hero, heroLocation.x, heroLocation.y);
@@ -110,7 +214,7 @@ if(40 in keysDown){
     }
   
 draw();
-
+// hello
 </script>
 
 </body>
