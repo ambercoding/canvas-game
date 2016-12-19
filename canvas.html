@@ -14,12 +14,15 @@
 	<button onclick="startGame();"> Start Game</button>
 	<input id="player-name" type="text" placeholder="Player Name">
 
-	<button onclick="newPlayer()">New Player</button>
-<div id="timer">30 Seconds</div>
+	<button onclick="newPlayer();">New Player</button>
+
 <div> <span id="current-player"></span>Score: <span id="score">0</span></div>
 <div>High Score: <span id="highScore">0</span> </div> 
+<div>Player: <span id="player-name"></span></div>
 	<!-- <button onclick="pauseGame()">Pause</button> -->
+<div id="timer">30 Seconds</div>
 </div>	
+
 	<script type="text/javascript">
 	var gameOn = false;
 	var score = 0;
@@ -189,9 +192,17 @@ if(40 in keysDown){
 		// console.log("Hero is left of the goblin");
 	console.log("Hero caught the monster");
 			var random = Math.random() * 200;
-			var random2 = Math.random() * 200;
+			var random2 = Math.random() * 300;
+			var random3 = Math.random() * 400;
+			var random4 = Math.random() * 200;
+			var random5 = Math.random() * 100;
+			var random6 = Math.random() * 400;
 			monsterLocation.x = random;
 			monsterLocation.y = random2;
+			monsterLocation.x = random3;
+			monsterLocation.x = random4;
+			monsterLocation.x = random5;
+			monsterLocation.x = random6;
 			score++;
 			document.getElementById('score').innerHTML=score;
 		
