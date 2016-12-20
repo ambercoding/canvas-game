@@ -18,7 +18,7 @@
 
 <div> <span id="current-player"></span>Score: <span id="score">0</span></div>
 <div>High Score: <span id="highScore">0</span> </div> 
-<div>Player: <span id="player-name"></span></div>
+<div>Player: <span id="player-name-display">New Player</span></div>
 	<!-- <button onclick="pauseGame()">Pause</button> -->
 <div id="timer">30 Seconds</div>
 </div>	
@@ -37,12 +37,18 @@
 	// Player.prototype.highscore = 0
 
 	function newPlayer(){
-		var playerNameDiv = document.getElementById('player-name');
-		var playerName = playerNameDiv.value;
+		var playerNameInputBox = document.getElementById('player-name');
+		console.log(playerNameInputBox);
+		var currentPlayerName = playerNameInputBox.value;
+		console.log(currentPlayerName);
+		//we have the current player name, now add it to the display location
+		document.getElementById("player-name-display").innerHTML = currentPlayerName;
+		// var playerName = playerNameDiv.value;
+	
 		// var player1 = new Player(playerName);
-		playerArray.push(new Player(playerName));
-		document.getElementById('current-player').innerHTML = playerName + "'s";
-		console.log(player1);
+		// playerArray.push(new Player(playerName));
+		// document.getElementById('current-player').innerHTML = playerName + "'s";
+		// console.log(player1);
 	}
 
 
